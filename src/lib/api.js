@@ -1,8 +1,10 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getLatestBooks() {
+export async function getBooks(limit) {
   try {
-    const response = await fetch(`${API_URL}/books?limit=6`, {
+    const query = limit ? `?limit=${limit}` : '';
+
+    const response = await fetch(`${API_URL}/books${query}`, {
       cache: 'no-store',
     });
 
@@ -14,7 +16,11 @@ export async function getLatestBooks() {
 
     return result.data || [];
   } catch (error) {
-    console.error('Error fetching latest books:', error);
+    console.error('Error fetching books:', error);
     return [];
   }
+}
+
+export async function getLatestBooks() {
+  return getBooks(6);
 }

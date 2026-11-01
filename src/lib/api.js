@@ -24,3 +24,26 @@ export async function getBooks(limit) {
 export async function getLatestBooks() {
   return getBooks(6);
 }
+
+export async function getBookById(id) {
+  try {
+    const response = await fetch(`${API_URL}/books/${id}`, {
+      cache: 'no-store',
+    });
+
+    if (response.status === 404 || response.status === 400) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch book details');
+    }
+
+    const result = await response.json();
+
+    return result.data || null;
+  } catch (error) {
+    console.error('Error fetching book details:', error);
+    return null;
+  }
+}

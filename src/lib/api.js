@@ -1,3 +1,4 @@
+import { authClient } from './auth-client';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getBooks(limit) {
@@ -65,4 +66,27 @@ export async function addBook(bookData, token) {
   }
 
   return result;
+}
+
+export async function getMyBooks() {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to view your books.');
+  }
+
+  const response = await fetch(`${API_URL}/books?mine=true`, {
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+    cache: 'no-store',
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to fetch your books.');
+  }
+
+  return result.data || [];
 }

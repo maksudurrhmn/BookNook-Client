@@ -47,3 +47,22 @@ export async function getBookById(id) {
     return null;
   }
 }
+
+export async function addBook(bookData, token) {
+  const response = await fetch(`${API_URL}/books`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(bookData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to add book');
+  }
+
+  return result;
+}

@@ -90,3 +90,51 @@ export async function getMyBooks() {
 
   return result.data || [];
 }
+
+export async function updateBook(id, bookData) {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to update this book.');
+  }
+
+  const response = await fetch(`${API_URL}/books/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify(bookData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to update book.');
+  }
+
+  return result;
+}
+
+export async function deleteBook(id) {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to delete this book.');
+  }
+
+  const response = await fetch(`${API_URL}/books/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to delete book.');
+  }
+
+  return result;
+}

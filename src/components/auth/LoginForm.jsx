@@ -10,7 +10,9 @@ export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const redirectTo = searchParams.get('callbackURL') || '/';
+  const callbackUrl = searchParams.get('callbackUrl');
+
+  const redirectTo = callbackUrl?.startsWith('/') ? callbackUrl : '/';
 
   const [formData, setFormData] = useState({
     email: '',

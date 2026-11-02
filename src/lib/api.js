@@ -138,3 +138,77 @@ export async function deleteBook(id) {
 
   return result;
 }
+
+// Borrow a book
+export async function borrowBook(bookId) {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to borrow a book.');
+  }
+
+  const response = await fetch(`${API_URL}/borrows`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ bookId }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to borrow book.');
+  }
+
+  return result;
+}
+
+// Get borrowing history
+export async function getMyBorrows() {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to view your borrowed books.');
+  }
+
+  const response = await fetch(`${API_URL}/borrows`, {
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+    cache: 'no-store',
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to fetch borrowed books.');
+  }
+
+  return result.data || [];
+}
+
+// Return a borrowed book
+export async function returnBorrow(borrowId) {
+  const { data, error } = await authClient.token();
+
+  if (error || !data?.token) {
+    throw new Error('Please log in to return a book.');
+  }
+
+  const response = await fetch(`${API_URL}/borrows/${borrowId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Failed to return book.');
+  }
+
+  return result;
+}

@@ -22,5 +22,11 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ['/add-book/:path*', '/my-books/:path*', '/my-borrows/:path*', '/books/:id'],
+  matcher: [
+    '/add-book/:path*',
+    '/my-books/:path*',
+    '/my-borrows/:path*',
+    '/my-profile/:path*',
+    '/books/:id',
+  ],
 };

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { authClient } from '@/lib/auth-client';
+import { BookOpen } from 'lucide-react';
 
 const publicLinks = [
   { name: 'Home', href: '/' },
@@ -66,10 +67,13 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={closeMenus}
-          className="text-2xl font-bold tracking-tight text-foreground"
+          className="text-2xl font-bold tracking-tight text-foreground inline-flex items-center gap-1"
         >
-          Book<span className="text-primary">Nook</span>
-          <span className="ml-1 text-primary">.</span>
+          <BookOpen className="text-primary" size={25} />
+          <div>
+            Book<span className="text-primary">Nook</span>
+            <span className="ml-1 text-primary">.</span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -120,7 +124,7 @@ export default function Navbar() {
                 {profileOpen && (
                   <div className="absolute right-0 top-12 w-48 rounded-xl border border-border bg-background p-2 shadow-lg">
                     <Link
-                      href="/profile"
+                      href="/my-profile"
                       onClick={closeMenus}
                       className="block rounded-lg px-3 py-2 text-sm hover:bg-surface-secondary"
                     >
@@ -185,7 +189,7 @@ export default function Navbar() {
 
             {!isPending && user && (
               <>
-                <Link href="/profile" onClick={closeMenus}>
+                <Link href="/my-profile" onClick={closeMenus}>
                   My Profile
                 </Link>
                 <button onClick={handleLogout} className="text-left text-red-500">

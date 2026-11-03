@@ -1,6 +1,7 @@
 import { authClient } from './auth-client';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+// Get all books with an optional limit
 export async function getBooks(limit) {
   try {
     const query = limit ? `?limit=${limit}` : '';
@@ -22,10 +23,12 @@ export async function getBooks(limit) {
   }
 }
 
+// Get latest books with a limit of 6
 export async function getLatestBooks() {
   return getBooks(6);
 }
 
+// Get book details by ID
 export async function getBookById(id) {
   try {
     const response = await fetch(`${API_URL}/books/${id}`, {
@@ -49,6 +52,7 @@ export async function getBookById(id) {
   }
 }
 
+// Add a new book
 export async function addBook(bookData, token) {
   const response = await fetch(`${API_URL}/books`, {
     method: 'POST',
@@ -68,6 +72,7 @@ export async function addBook(bookData, token) {
   return result;
 }
 
+// Get books added by the logged-in user
 export async function getMyBooks() {
   const { data, error } = await authClient.token();
 
@@ -91,6 +96,7 @@ export async function getMyBooks() {
   return result.data || [];
 }
 
+// Update a book
 export async function updateBook(id, bookData) {
   const { data, error } = await authClient.token();
 
@@ -116,6 +122,7 @@ export async function updateBook(id, bookData) {
   return result;
 }
 
+// Delete a book
 export async function deleteBook(id) {
   const { data, error } = await authClient.token();
 

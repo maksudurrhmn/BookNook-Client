@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import BookCard from './BookCard';
 

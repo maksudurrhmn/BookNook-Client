@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getMyBooks, updateBook, deleteBook } from '@/lib/api';
 import MyBookCard from './MyBookCard';
@@ -81,6 +81,9 @@ export default function MyBooks() {
       setMessage(err.message || 'Failed to update book.');
     } finally {
       setIsSaving(false);
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
     }
   };
 
@@ -100,12 +103,16 @@ export default function MyBooks() {
     } catch (err) {
       setMessage(err.message || 'Failed to delete book.');
       setDeleteTarget(null);
+    } finally {
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
     }
   };
 
   return (
-    <section className="container mx-auto min-h-screen px-4 py-12">
-      <div className="mb-10 text-center">
+    <section className="container mx-auto min-h-screen px-4 py-12 ">
+      <div className="mb-10 text-center ">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <Library size={28} />
         </div>

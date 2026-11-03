@@ -22,7 +22,7 @@ export default async function MyProfilePage() {
   return (
     <main className="container mx-auto min-h-screen px-4 py-12">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
           <p className="mt-2 text-sm text-muted">View your personal account information.</p>
         </div>

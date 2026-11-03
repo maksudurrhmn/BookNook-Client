@@ -50,7 +50,7 @@ export default function BookDetails({ book }) {
 
       <div className="grid gap-10 rounded-3xl border border-border bg-background p-6 sm:p-10 md:grid-cols-2">
         {/* Book Cover */}
-        <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl bg-surface-secondary">
+        <div className="relative mx-auto aspect-3/4 w-full max-w-md overflow-hidden rounded-2xl bg-surface-secondary">
           <Image
             src={book.image}
             alt={book.title}
@@ -134,7 +134,7 @@ export default function BookDetails({ book }) {
       {/* Borrow Confirmation Modal */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
           onClick={() => !isBorrowing && setIsModalOpen(false)}
         >
           <div

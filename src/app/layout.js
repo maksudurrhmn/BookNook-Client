@@ -1,8 +1,9 @@
 import { DM_Sans } from 'next/font/google';
 import './globals.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ThemeProvider from '../components/ThemeProvider';
+import Navbar from '../components/shared/Navbar';
+import Footer from '../components/shared/Footer';
+import ThemeProvider from '../components/context/ThemeProvider';
+import { Suspense } from 'react';
 
 const dmSans = DM_Sans({
   variable: '--font-dm-sans',
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning className={`${dmSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <Navbar />
+          <Suspense>
+            <Navbar />
+          </Suspense>
           <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>

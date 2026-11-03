@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Library, LoaderCircle, CheckCircle, RotateCcw } from 'lucide-react';
+import { Library, LoaderCircle, CheckCircle, RotateCcw, RefreshCw } from 'lucide-react';
 
 import { getMyBorrows, returnBorrow } from '@/lib/api';
 
@@ -61,15 +61,27 @@ export default function MyBorrows() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <LoaderCircle className="animate-spin text-primary" size={36} />
-      </div>
+      <section className="container mx-auto min-h-screen animate-pulse px-4 py-12">
+        <div className="mb-10 text-center">
+          {/* Library Icon */}
+          <div className="mx-auto h-14 w-14 rounded-2xl bg-surface-secondary" />
+
+          {/* Heading */}
+          <div className="mx-auto mt-5 h-10 w-48 rounded-lg bg-surface-secondary" />
+
+          {/* Description */}
+          <div className="mx-auto mt-3 h-4 w-full max-w-xl rounded bg-surface-secondary" />
+        </div>
+        <div className="flex min-h-60 items-center justify-center">
+          <RefreshCw size={28} className="animate-spin text-primary" />
+        </div>
+      </section>
     );
   }
 
   return (
     <section className="container mx-auto min-h-screen px-4 py-12">
-      <div className="mb-10">
+      <div className="mb-10 text-center">
         <p className="text-sm font-semibold uppercase tracking-wider text-primary">Your Library</p>
 
         <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">My Borrows</h1>
@@ -117,7 +129,7 @@ export default function MyBorrows() {
               key={borrow._id}
               className="overflow-hidden rounded-2xl border border-border bg-background"
             >
-              <div className="relative aspect-[3/2] bg-surface-secondary">
+              <div className="relative aspect-3/2 bg-surface-secondary">
                 <Image
                   src={borrow.bookImage}
                   alt={borrow.bookTitle}

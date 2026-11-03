@@ -13,6 +13,7 @@ export default function MyBorrows() {
   const [returningId, setReturningId] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [selectedBorrow, setSelectedBorrow] = useState(null);
 
   useEffect(() => {
     const fetchBorrows = async () => {
@@ -30,10 +31,6 @@ export default function MyBorrows() {
   }, []);
 
   const handleReturn = async (borrowId) => {
-    const confirmed = window.confirm('Are you sure you want to return this book?');
-
-    if (!confirmed) return;
-
     try {
       setReturningId(borrowId);
       setError('');
@@ -41,8 +38,8 @@ export default function MyBorrows() {
 
       await returnBorrow(borrowId);
 
-      setBorrows((previousBorrows) =>
-        previousBorrows.map((borrow) =>
+      setBorrows((prev) =>
+        prev.map((borrow) =>
           borrow._id === borrowId
             ? {
                 ...borrow,
@@ -54,6 +51,7 @@ export default function MyBorrows() {
       );
 
       setSuccess('Book returned successfully!');
+      setSelectedBorrow(null);
     } catch (err) {
       setError(err.message || 'Failed to return book.');
     } finally {
@@ -155,7 +153,7 @@ export default function MyBorrows() {
 
                 {borrow.status === 'active' && (
                   <button
-                    onClick={() => handleReturn(borrow._id)}
+                    onClick={() => setSelectedBorrow(borrow)}
                     disabled={returningId === borrow._id}
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
@@ -175,6 +173,42 @@ export default function MyBorrows() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {selectedBorrow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-background p-6 shadow-xl">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Library size={24} />
+            </div>
+
+            <h2 className="text-xl font-semibold text-foreground">Return this book?</h2>
+
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Are you sure you want to return{' '}
+              <span className="font-semibold text-foreground">{selectedBorrow.book?.title}</span>?
+              This action will update your borrowing status.
+            </p>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => setSelectedBorrow(null)}
+                disabled={returningId === selectedBorrow._id}
+                className="flex-1 rounded-xl border border-border px-4 py-2.5 text-sm font-medium hover:bg-surface-secondary disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => handleReturn(selectedBorrow._id)}
+                disabled={returningId === selectedBorrow._id}
+                className="flex-1 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+              >
+                {returningId === selectedBorrow._id ? 'Returning...' : 'Confirm Return'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </section>

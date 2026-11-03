@@ -11,6 +11,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get('callbackUrl');
+  const message = searchParams.get('message');
 
   const redirectTo = callbackUrl?.startsWith('/') ? callbackUrl : '/';
 
@@ -77,6 +78,10 @@ export default function LoginForm() {
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
           <p className="mt-2 text-sm text-muted">Login to continue your reading journey.</p>
         </div>
+
+        {message && (
+          <p className="mb-4 rounded-lg bg-primary/10 p-3 text-sm text-primary">{message}</p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, User, Library, X, CheckCircle, LoaderCircle } from 'lucide-react';
 
 import { borrowBook } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 export default function BookDetails({ book }) {
   const router = useRouter();
@@ -27,14 +28,20 @@ export default function BookDetails({ book }) {
       await borrowBook(book._id);
 
       setMessage('Book borrowed successfully!');
+      toast.success('Book borrowed successfully!');
       setIsModalOpen(false);
 
       // Refresh the server-fetched book information.
       router.refresh();
     } catch (err) {
       setError(err.message || 'Something went wrong.');
+      toast.error(err.message || 'Something went wrong.');
     } finally {
       setIsBorrowing(false);
+      setTimeout(() => {
+        setMessage('');
+        setError('');
+      }, 5000);
     }
   };
 

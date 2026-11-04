@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Library, LoaderCircle, CheckCircle, RotateCcw, RefreshCw } from 'lucide-react';
 
 import { getMyBorrows, returnBorrow } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 export default function MyBorrows() {
   const [borrows, setBorrows] = useState([]);
@@ -49,13 +50,18 @@ export default function MyBorrows() {
             : borrow
         )
       );
-
       setSuccess('Book returned successfully!');
+      toast.success('Book returned successfully!');
       setSelectedBorrow(null);
     } catch (err) {
       setError(err.message || 'Failed to return book.');
+      toast.error(err.message || 'Failed to return book.');
     } finally {
       setReturningId(null);
+      setTimeout(() => {
+        setSuccess('');
+        setError('');
+      }, 3000);
     }
   };
 

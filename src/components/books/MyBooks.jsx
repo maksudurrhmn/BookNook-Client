@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getMyBooks, updateBook, deleteBook } from '@/lib/api';
 import MyBookCard from './MyBookCard';
 import { Library, RefreshCw, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const categories = ['Fiction', 'Science', 'History', 'Kids', 'Others'];
 
@@ -74,16 +75,18 @@ export default function MyBooks() {
 
       setSelectedBook(null);
       setMessage('Book updated successfully!');
+      toast.success('Book updated successfully!');
 
       await fetchMyBooks();
       router.refresh();
     } catch (err) {
       setMessage(err.message || 'Failed to update book.');
+      toast.error(err.message || 'Failed to update book.');
     } finally {
       setIsSaving(false);
       setTimeout(() => {
         setMessage('');
-      }, 3000);
+      }, 5000);
     }
   };
 
@@ -97,11 +100,13 @@ export default function MyBooks() {
 
       setDeleteTarget(null);
       setMessage('Book deleted successfully!');
+      toast.success('Book deleted successfully!');
 
       await fetchMyBooks();
       router.refresh();
     } catch (err) {
       setMessage(err.message || 'Failed to delete book.');
+      toast.error(err.message || 'Failed to delete book.');
       setDeleteTarget(null);
     } finally {
       setTimeout(() => {

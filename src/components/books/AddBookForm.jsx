@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { BookPlus } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { addBook } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 const categories = ['Fiction', 'Science', 'History', 'Kids', 'Others'];
 
@@ -59,6 +60,7 @@ export default function AddBookForm() {
       await addBook(bookData, data.token);
 
       setSuccess('Book added successfully!');
+      toast.success('Book added successfully!');
       setFormData(initialFormData);
 
       setTimeout(() => {
@@ -67,8 +69,13 @@ export default function AddBookForm() {
       }, 1000);
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
+      toast.error(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
+      setTimeout(() => {
+        setError('');
+        setSuccess('');
+      }, 3000);
     }
   };
 

@@ -86,7 +86,7 @@ export default function MyBooks() {
       setIsSaving(false);
       setTimeout(() => {
         setMessage('');
-      }, 5000);
+      }, 3000);
     }
   };
 
